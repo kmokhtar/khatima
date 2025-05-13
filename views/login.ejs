@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to KHATIMA</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .intro { font-size: 1.2em; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Welcome to KHATIMA</h2>
+  <p class="intro">The FIRST application to share reading Quran.</p>
+  <form method="POST" action="/login">
+    Username: <input type="text" name="username" required /><br>
+    Password: <input type="password" name="password" required /><br>
+    <input type="submit" value="Login" />
+  </form>
+  <br>
+  <a href="/register">Register</a>
+</body>
+</html>

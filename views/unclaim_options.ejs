@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Unclaim Options</title>
+  <style>
+    .btn-action {
+      display: inline-block;
+      padding: 6px 12px;
+      margin: 0 4px;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-action:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Unclaim Options for Task <%= task.number %></h2>
+  <p>This task is currently claimed by <%= task.claimed_by_username %>.</p>
+
+  <!-- Option 1: Mark as Done -->
+  <form method="POST" action="/mark_task_done/<%= task.id %>">
+    <button type="submit" class="btn-action">Mark Task as Done</button>
+  </form>
+
+  <!-- Option 2: Unclaim (Release) the Task -->
+  <form method="POST" action="/unclaim_task/<%= task.id %>">
+    <button type="submit" class="btn-action">Unclaim the Task</button>
+  </form>
+
+  <!-- Link back to the project -->
+  <p><a href="/project/<%= task.project_id %>">Go Back to Project</a></p>
+</body>
+</html>

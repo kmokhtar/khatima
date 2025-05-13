@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h2 { margin-bottom: 0; }
+    ul { list-style: none; padding-left: 0; }
+    li { margin-bottom: 5px; }
+    a { text-decoration: none; color: #007bff; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <!-- Welcome message -->
+  <p>Welcome <%= username %></p>
+  
+  <h2>Dashboard</h2>
+  
+  <h3>Ongoing Khatima You Started:</h3>
+  <ul>
+    <% if (ownedProjects && ownedProjects.length > 0) { %>
+      <% ownedProjects.forEach(function(khatima) { %>
+        <li>
+          <a href="/project/<%= khatima.id %>"><%= khatima.name %></a>
+          (Invitation Code: <%= khatima.invitation_code %>)
+        </li>
+      <% }); %>
+    <% } else { %>
+      <li>No Ongoing Khatima You Started.</li>
+    <% } %>
+  </ul>
+  
+  <h3>Ongoing Khatima You Joined:</h3>
+  <ul>
+    <% if (joinedProjects && joinedProjects.length > 0) { %>
+      <% joinedProjects.forEach(function(khatima) { %>
+        <li>
+          <a href="/project/<%= khatima.id %>"><%= khatima.name %></a>
+          (Invitation Code: <%= khatima.invitation_code %>)
+        </li>
+      <% }); %>
+    <% } else { %>
+      <li>No Ongoing Khatima You Joined.</li>
+    <% } %>
+  </ul>
+  
+  <h3>Completed Khatima:</h3>
+  <ul>
+    <% if (finishedProjects && finishedProjects.length > 0) { %>
+      <% finishedProjects.forEach(function(khatima) { %>
+        <li>
+          <a href="/project/<%= khatima.id %>"><%= khatima.name %></a>
+          (Invitation Code: <%= khatima.invitation_code %>)
+        </li>
+      <% }); %>
+    <% } else { %>
+      <li>No Completed Khatima.</li>
+    <% } %>
+  </ul>
+  
+  <p>
+    <a href="/create_project">Create New Khatima</a><br>
+    <a href="/join_project">Join Khatima</a><br>
+    <a href="/logout">Logout</a>
+  </p>
+</body>
+</html>

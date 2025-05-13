@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Create Khatima</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <h2>Create New Khatima</h2>
+  <% if (typeof message !== 'undefined' && message) { %>
+    <p style="color:red;"><%= message %></p>
+  <% } %>
+  <form method="POST" action="/create_project">
+    Khatima Name: <input type="text" name="name" required /><br>
+    <input type="submit" value="Create Khatima" />
+  </form>
+  <br>
+  <a href="/dashboard">Back to Dashboard</a>
+</body>
+</html>

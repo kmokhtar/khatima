@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Khatima Detail</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    th { background-color: #f2f2f2; }
+    form { display: inline; }
+    .btn-action {
+      padding: 6px 12px;
+      margin: 0 4px;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-action:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h2>Khatima: <%= project.name %></h2>
+  <p>
+    Invitation Code: <%= project.invitation_code %>
+    <!-- Share Button -->
+    <button id="shareBtn" onclick="shareLink()" class="btn-action">Share Invitation Link</button>
+    <span id="copyFeedback" style="margin-left: 10px; color: green;"></span>
+  </p>
+
+  <script>
+    function shareLink(){
+      const link = window.location.protocol + '//' + window.location.host + '/join_project?invitation_code=' + '<%= project.invitation_code %>';
+      const shareButton = document.getElementById('shareBtn');
+      const copyFeedback = document.getElementById('copyFeedback');
+      
+      if (navigator.clipboard) { // Check if Clipboard API is available
+        navigator.clipboard.writeText(link).then(() => {
+          // Success feedback
+          const originalText = shareButton.textContent;
+          shareButton.textContent = 'Copied!';
+          copyFeedback.textContent = 'Link copied to clipboard!';
+          setTimeout(() => {
+            shareButton.textContent = originalText;
+            copyFeedback.textContent = '';
+          }, 3000); // Revert after 3 seconds
+        }).catch(err => {
+          // Error feedback (e.g. if permission denied or HTTPS not used)
+          console.error('Failed to copy: ', err);
+          copyFeedback.textContent = 'Failed to copy. Please copy manually.';
+          // Fallback to prompt if clipboard API fails
+          prompt("Copy this link manually:", link);
+          setTimeout(() => {
+            copyFeedback.textContent = '';
+          }, 5000);
+        });
+      } else {
+        // Fallback for older browsers or non-secure contexts
+        prompt("Clipboard API not available. Copy this link manually:", link);
+      }
+    }
+  </script>
+  
+  <% if (project.is_complete == 1) { %>
+    <h3>This khatima is complete.</h3>
+  <% } %>
+
+  <% if (project.admin_id == userId) { %>
+    <form method="POST" action="/project/<%= project.id %>/rename">
+      <input type="text" name="new_name" placeholder="New Khatima Name" required />
+      <input type="submit" value="Rename Khatima" />
+    </form>
+  <% } %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Juz' Number</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% tasks.forEach(function(task) { %>
+      <tr>
+        <td><%= task.number %></td>
+        <td>
+          <% if (task.is_done == 1) { %>
+            Done (<%= task.claimed_by_username ? task.claimed_by_username : "Unknown" %>)
+          <% } else if (task.claimed_by) { %>
+            Claimed by <%= task.claimed_by_username ? task.claimed_by_username : "Unknown" %>
+          <% } else { %>
+            Unclaimed
+          <% } %>
+        </td>
+        <td>
+          <% if (!task.claimed_by && task.is_done == 0) { %>
+            <form method="POST" action="/claim_task/<%= task.id %>">
+              <button type="submit" class="btn-action">Claim</button>
+            </form>
+          <% } %>
+          <% if (task.claimed_by == userId && task.is_done == 0) { %>
+            <form method="POST" action="/mark_task_done/<%= task.id %>">
+              <button type="submit" class="btn-action">Mark Done</button>
+            </form>
+            <form method="POST" action="/unclaim_task/<%= task.id %>">
+              <button type="submit" class="btn-action">Unclaim</button>
+            </form>
+          <% } %>
+          <% if (project.admin_id == userId) { %>
+            <% if (task.is_done == 1) { %>
+              <form method="POST" action="/admin_override/<%= task.id %>" style="display:inline;">
+                <input type="hidden" name="action" value="reset" />
+                <button type="submit" class="btn-action">Reset</button>
+              </form>
+            <% } else if (task.claimed_by && task.is_done == 0) { %>
+              <form method="POST" action="/admin_override/<%= task.id %>" style="display:inline;">
+                <input type="hidden" name="action" value="unclaim" />
+                <button type="submit" class="btn-action">Admin Unclaim</button>
+              </form>
+              <form method="POST" action="/admin_override/<%= task.id %>" style="display:inline;">
+                <input type="hidden" name="action" value="mark_done" />
+                <button type="submit" class="btn-action">Force Mark Done</button>
+              </form>
+            <% } %>
+          <% } %>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  
+  <br>
+  <a href="/dashboard">Back to Dashboard</a>
+
+  <script>
+    // Save current scroll position in localStorage before the page unloads
+    window.addEventListener("beforeunload", function() {
+      localStorage.setItem("scrollPosition", window.scrollY);
+    });
+  
+    // On page load, check if a scroll position is stored and scroll to that position
+    window.addEventListener("load", function() {
+      const scrollPosition = localStorage.getItem("scrollPosition");
+      if (scrollPosition !== null) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        // Optionally, clear the stored value after restoring the scroll position:
+        // localStorage.removeItem("scrollPosition");
+      }
+    });
+  </script>
+</body>
+</html>
+

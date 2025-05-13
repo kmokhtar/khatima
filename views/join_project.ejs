@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Join Khatima</title>
+</head>
+<body>
+  <h2>Join Khatima</h2>
+  <% if (typeof message !== 'undefined' && message) { %>
+    <p style="color:red;"><%- message %></p>
+  <% } %>
+  <form method="POST" action="/join_project">
+    Invitation Code: 
+    <input type="text" name="invitation_code" 
+           value="<%= typeof invitation_code !== 'undefined' ? invitation_code : '' %>" 
+           required />
+    <br>
+    <input type="submit" value="Join Khatima" />
+  </form>
+  <p><a href="/dashboard">Back to Dashboard</a></p>
+</body>
+</html>
+

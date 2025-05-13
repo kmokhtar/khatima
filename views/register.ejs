@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .message {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Register</h2>
+  <% if (message) { %>
+    <p class="message"><%= message %></p>
+  <% } %>
+  <form method="POST" action="/register">
+    Username: <input type="text" name="username" required /><br>
+    Password: <input type="password" name="password" required /><br>
+    <input type="submit" value="Register" />
+  </form>
+  <br>
+  <a href="/login">Already have an account? Login here.</a>
+</body>
+</html>
