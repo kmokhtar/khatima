@@ -1,0 +1,20 @@
+{
+  "name": "khatma-node",
+  "version": "1.0.0",
+  "description": "Khatma Node.js app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+  "bcrypt": "^5.1.0",
+  "body-parser": "^1.20.1",
+  "ejs": "^3.1.8",
+  "express": "^4.18.2",
+  "express-session": "^1.17.3",
+  "sqlite3": "^5.1.6",
+  "uuid": "^9.0.0"
+},
+  "author": "",
+  "license": "ISC"
+}
